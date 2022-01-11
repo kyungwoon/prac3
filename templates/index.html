@@ -73,7 +73,7 @@
     }
 
 
-    /* TAG */
+
     .tag {
         padding: 20px;
     }
@@ -90,16 +90,12 @@
 
     .tag > .group > button {
         font-weight: bold;
-        /*background-color: #005a0b;*/
-        /*text-decoration: none;*/
+
     }
 
     #cards {
         width: 100%;
-        padding:0 20px 10px 150px;
-        /*padding-left: 15px;*/
-
-
+        padding: 0 20px 10px 150px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -177,34 +173,6 @@
 
     }
 
-    /*.container img {*/
-    /*    width: 100%;*/
-    /*    height: auto;*/
-    /*}*/
-
-    .container .btn {
-        position: absolute;
-        /*top: 50%;*/
-        left: 50%;
-        transform: translate(270%, -120%);
-        /*-ms-transform: translate(-50%, -50%);*/
-        /*background-color: #f1f1f1;*/
-        /*color: black;*/
-        font-size: 16px;
-        /*padding: 10px 30px;*/
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        text-align: center;
-
-
-    }
-
-    .container .btn:hover {
-        background-color: #ffffff;
-        /*color: white;*/
-
-    }
 
 
 </style>
@@ -213,65 +181,38 @@
 <script>
 
     $(document).ready(function () {
+        keyword();
     });
 
-
-    function like(title) {
-        $.ajax({
-            type: 'POST',
-            url: '/main',
-            data: {title_give: title},
-            success: function (response) {
-                alert(response['msg']);
-                window.location.reload()
-            }
-        });
-    }
-
-
     //키워드 클릭 시 카드 띄우기
-    function keyword(data) {
-        $('#cards').empty();
+    function keyword() {
         $.ajax({
-            // main/type에서 recipe db가져오기
             type: "GET",
-            url: "/main/category",
-            data: {"category": data},
+            url: "/main",
+            data: {},
             success: function (response) {
-                let keyword = JSON.parse(response['category_card']) //dump()로 변환한 문자열을 JSON.parse로 가져오기
-                for (let i = 0; i < keyword.length; i++) {
-                    let img = keyword[i]['image']
-                    let title = keyword[i]['title']
-                    let comment = keyword[i]['comment']
-                    let tag = keyword[i]['tag']
+                let cards = response['all_card']
 
+                for (let i = 0; i < cards.length; i++) {
+                    let title = cards[i]['title']
+                    let address = cards[i]['address']
+                    let description = cards[i]['description']
+                    let image = cards[i]['image']
 
                     let temp_html = `<div class="card-box">
-                                        <a href="/detail=${title}"></a>
-                                        <div class="card-image">
-                                            <img src="/static/logo.jpg" alt="card-image">  <!-- 키워드로 이미지 붇게 할수있는방법?-->
-
-                                            <div class="container">
-                                                <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
-                                                    <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
-                                                         viewBox="0 0 24 24" width="24">
-                                                        <path d="M0 0h24v24H0z" fill="none"/>
-                                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                                    </svg>
-                                                </button>
-
+                                            <div class="card-image">
+                                                <a href="/detail">
+                                                    <img src="${image}" alt="card-image"> </a>
+                                                <div class="container">
+                                                </div>
                                             </div>
 
-                                        </div>
-                                        <ul class="list-group list-group-flush">
-
-                                            <li class="list-group-item">${title}</li>
-                                            <li class="list-group-item">${comment}</li>
-                                            <li class="list-group-item">${tag}</li>
-                                        </ul>
-
-
-                                    </div>`
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item">차박지: ${title}</li>
+                                                    <li class="list-group-item">코멘트: ${description}</li>
+                                                    <li class="list-group-item">주소: ${address}</li>
+                                                </ul>
+                                        </div>`
                     $('#cards').append(temp_html)
 
                 }
@@ -279,29 +220,27 @@
         });
     }
 
-    //상단으로 올라가는 아이콘
-    // window.addEventListener('scroll', _.throttle(function () { //스크롤 이벤트 rodash이용
-    //     //console.log(window.scrollY);
-    //     // _.throttle(함수, 시간)
-    //     if (window.scrollY > 500) {
-    //         //버튼 보이기
-    //         gsap.to('#to-top', .2, { //애니메이션 라이브러리 gsap
-    //             x: 0
-    //         });
-    //     } else {
-    //         //버튼 숨기기
-    //         gsap.to('#to-top', .2, {
-    //             x: 100
-    //         });
-    //     }
-    // }, 300));
-    //
-    // const toTopEl = document.querySelector('#to-top');
-    // toTopEl.addEventListener('click', function () {
-    //     gsap.to(window, .7, {
-    //         scrollTo: 0
-    //     });
-    // });
+
+    window.addEventListener('scroll', _.throttle(function () { //스크롤 이벤트 rodash이용
+        if (window.scrollY > 500) {
+            //버튼 보이기
+            gsap.to('#to-top', .2, { //애니메이션 라이브러리 gsap
+                x: 0
+            });
+        } else {
+            //버튼 숨기기
+            gsap.to('#to-top', .2, {
+                x: 100
+            });
+        }
+    }, 300));
+
+    const toTopEl = document.querySelector('#to-top');
+    toTopEl.addEventListener('click', function () {
+        gsap.to(window, .7, {
+            scrollTo: 0
+        });
+    });
 
 
 </script>
@@ -331,110 +270,6 @@
 
         <div id="cards">
 
-            <div class="card-box">
-                <div class="card-image">
-                    <a href="/detail">
-                        <img src="/static/logo.jpg" alt="card-image"> </a>
-                    <div class="container">
-                        <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
-                            <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
-                                 viewBox="0 0 24 24" width="24">
-                                <path d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <ul class="list-group list-group-flush">
-
-                    <li class="list-group-item">차박지</li>
-                    <li class="list-group-item">코멘트</li>
-                    <li class="list-group-item">태그</li>
-                </ul>
-
-
-            </div>
-            <div class="card-box">
-                <div class="card-image">
-                    <a href="/detail">
-                        <img src="/static/logo.jpg" alt="card-image"> </a>
-                    <div class="container">
-                        <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
-                            <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
-                                 viewBox="0 0 24 24" width="24">
-                                <path d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <ul class="list-group list-group-flush">
-
-                    <li class="list-group-item">차박지</li>
-                    <li class="list-group-item">코멘트</li>
-                    <li class="list-group-item">태그</li>
-                </ul>
-
-
-            </div>
-            <div class="card-box">
-                <div class="card-image">
-                    <a href="/detail">
-                        <img src="/static/logo.jpg" alt="card-image"> </a>
-                    <div class="container">
-                        <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
-                            <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
-                                 viewBox="0 0 24 24" width="24">
-                                <path d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <ul class="list-group list-group-flush">
-
-                    <li class="list-group-item">차박지</li>
-                    <li class="list-group-item">코멘트</li>
-                    <li class="list-group-item">태그</li>
-                </ul>
-
-
-            </div>
-            <div class="card-box">
-                <div class="card-image">
-                    <a href="/detail">
-                        <img src="/static/logo.jpg" alt="card-image"> </a>
-                    <div class="container">
-                        <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
-                            <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
-                                 viewBox="0 0 24 24" width="24">
-                                <path d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <ul class="list-group list-group-flush">
-
-                    <li class="list-group-item">차박지</li>
-                    <li class="list-group-item">코멘트</li>
-                    <li class="list-group-item">태그</li>
-                </ul>
-
-
-            </div>
 
         </div>
 
