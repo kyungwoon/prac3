@@ -1,3 +1,5 @@
+from json import dumps
+
 from flask import Flask, render_template, jsonify, request
 app = Flask(__name__)
 
@@ -20,29 +22,28 @@ def home():
 
 # 메인페이지
 
-# 메인 페이지 재료 클릭 시 재료별 카드출력
-@app.route('/main/type', methods=['GET'])
-# db에서 키워드로 db리스트 가져오기
-def show_card():
-    keyword = request.args.get('type')
-    menu_card = list(db.recipe.find({'type': {'$regex': keyword}})) # $regex -> 포함된 문자열을 리스트 가져오기
-    return jsonify({'menu_card': dumps(menu_card)}) #dump() -> JSON문자열로 변환, id값이 $oid안에 있어서?
+# 메인 페이지 지역 클릭 시 지역별 카드출력
+@app.route('/main/category', methods=['GET'])
+def show_card(): # db에서 키워드로 db리스트 가져오기
+    keyword = request.args.get('category')
+    category_card = list(db.chabak.find({'type': {'$regex': keyword}})) # $regex -> 포함된 문자열을 리스트 가져오기
+    return jsonify({'title_card': dumps(category_card)}) #dump() -> JSON문자열로 변환, id값이 $oid안에 있어서?
 
-@app.route('/detail')
-def title():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        userid = (payload["id"])
-
-        id_address = request.args.get('id') #url에서 파라미터값 가져오기
-        recipeData = db.recipe.find_one({'_id':ObjectId(id_address)}) #mongodb의 ID값 가져올때 ObjectID
-        user_info = db.users.find_one({'userid': userid})
-        return render_template("detail.html", user = user_info, recipe=recipeData)
-    except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
-    except jwt.exceptions.DecodeError:
-        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+# @app.route('/detail')
+# def title():
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         userid = (payload["id"])
+#
+#         id_address = request.args.get('id') #url에서 파라미터값 가져오기
+#         recipeData = db.recipe.find_one({'_id':ObjectId(id_address)}) #mongodb의 ID값 가져올때 ObjectID
+#         user_info = db.users.find_one({'userid': userid})
+#         return render_template("detail.html", user = user_info, recipe=recipeData)
+#     except jwt.ExpiredSignatureError:
+#         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+#     except jwt.exceptions.DecodeError:
+#         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 # //////////////////////////댓글/////////////////////////////
 # @app.route('/posting', methods=['POST'])

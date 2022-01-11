@@ -240,23 +240,43 @@
         $.ajax({
             // main/type에서 recipe db가져오기
             type: "GET",
-            url: "/main/type",
-            data: {"type": data},
+            url: "/main/category",
+            data: {"category": data},
             success: function (response) {
-                let keyword = JSON.parse(response['menu_card']) //dump()로 변환한 문자열을 JSON.parse로 가져오기
+                let keyword = JSON.parse(response['category_card']) //dump()로 변환한 문자열을 JSON.parse로 가져오기
                 for (let i = 0; i < keyword.length; i++) {
                     let img = keyword[i]['image']
                     let title = keyword[i]['title']
                     let id = keyword[i]['_id']['$oid']
-                    let temp_html = `<li class="card-box">
-                                            <a href="/detail?id=${id}">
-                                                <div class="card-image">
-                                                    <img src="${img}" alt="...">
-                                                </div>
-                                                <p class="card-txt" id="tile_name">${title}</p>
-                                            </a>
-                                        </li>`
+
+                    let temp_html = `<div class="card-box">
+                                        <a href="/detail=${title}"></a>
+                                        <div class="card-image">
+                                            <img src="/static/logo.jpg" alt="card-image"> // 키워드로 붇게 할수있는방법?
+
+                                            <div class="container">
+                                                <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
+                                                    <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
+                                                         viewBox="0 0 24 24" width="24">
+                                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                                    </svg>
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+
+                                            <li class="list-group-item">차박지</li>
+                                            <li class="list-group-item">코멘트</li>
+                                            <li class="list-group-item">태그</li>
+                                        </ul>
+
+
+                                    </div>`
                     $('#cards').append(temp_html)
+
                 }
             }
         });
@@ -314,12 +334,10 @@
 
         <div id="cards">
 
-
             <div class="card-box">
-                <a href="/detail=${title}"></a>
                 <div class="card-image">
-                    <img src="/static/logo.jpg" alt="card-image">
-
+                    <a href="/detail">
+                        <img src="/static/logo.jpg" alt="card-image"> </a>
                     <div class="container">
                         <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
                             <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
@@ -332,6 +350,7 @@
                     </div>
 
                 </div>
+
                 <ul class="list-group list-group-flush">
 
                     <li class="list-group-item">차박지</li>
@@ -342,10 +361,9 @@
 
             </div>
             <div class="card-box">
-                <a href="/detail=${title}"></a>
                 <div class="card-image">
-                    <img src="/static/logo.jpg" alt="card-image">
-
+                    <a href="/detail">
+                        <img src="/static/logo.jpg" alt="card-image"> </a>
                     <div class="container">
                         <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
                             <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
@@ -358,6 +376,7 @@
                     </div>
 
                 </div>
+
                 <ul class="list-group list-group-flush">
 
                     <li class="list-group-item">차박지</li>
@@ -368,10 +387,9 @@
 
             </div>
             <div class="card-box">
-                <a href="/detail=${title}"></a>
                 <div class="card-image">
-                    <img src="/static/logo.jpg" alt="card-image">
-
+                    <a href="/detail">
+                        <img src="/static/logo.jpg" alt="card-image"> </a>
                     <div class="container">
                         <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
                             <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
@@ -384,6 +402,7 @@
                     </div>
 
                 </div>
+
                 <ul class="list-group list-group-flush">
 
                     <li class="list-group-item">차박지</li>
@@ -394,10 +413,9 @@
 
             </div>
             <div class="card-box">
-                <a href="/detail=${title}"></a>
                 <div class="card-image">
-                    <img src="/static/logo.jpg" alt="card-image">
-
+                    <a href="/detail">
+                        <img src="/static/logo.jpg" alt="card-image"> </a>
                     <div class="container">
                         <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
                             <svg class="nav-icon like" xmlns="http://www.w3.org/2000/svg" height="24"
@@ -410,6 +428,7 @@
                     </div>
 
                 </div>
+
                 <ul class="list-group list-group-flush">
 
                     <li class="list-group-item">차박지</li>
@@ -419,7 +438,6 @@
 
 
             </div>
-
 
         </div>
 
