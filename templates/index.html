@@ -215,11 +215,6 @@
     $(document).ready(function () {
     });
 
-    // 캐러셀 조작
-    $('.carousel').carousel({
-        interval: 2000, //시간
-        wrap: true //영구 반복
-    })
 
     function like(title) {
         $.ajax({
@@ -247,12 +242,14 @@
                 for (let i = 0; i < keyword.length; i++) {
                     let img = keyword[i]['image']
                     let title = keyword[i]['title']
-                    let id = keyword[i]['_id']['$oid']
+                    let comment = keyword[i]['comment']
+                    let tag = keyword[i]['tag']
+
 
                     let temp_html = `<div class="card-box">
                                         <a href="/detail=${title}"></a>
                                         <div class="card-image">
-                                            <img src="/static/logo.jpg" alt="card-image"> // 키워드로 붇게 할수있는방법?
+                                            <img src="/static/logo.jpg" alt="card-image">  <!-- 키워드로 이미지 붇게 할수있는방법?-->
 
                                             <div class="container">
                                                 <button class="btn" type="button" onclick="javascript:sensorBtnClick('btn1');">
@@ -268,9 +265,9 @@
                                         </div>
                                         <ul class="list-group list-group-flush">
 
-                                            <li class="list-group-item">차박지</li>
-                                            <li class="list-group-item">코멘트</li>
-                                            <li class="list-group-item">태그</li>
+                                            <li class="list-group-item">${title}</li>
+                                            <li class="list-group-item">${comment}</li>
+                                            <li class="list-group-item">${tag}</li>
                                         </ul>
 
 
