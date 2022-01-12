@@ -69,10 +69,8 @@
         width: 250px;
         height: 150px;
         display: flex;
-        justify-content: left;
+
     }
-
-
 
     .tag {
         padding: 20px;
@@ -124,27 +122,10 @@
         box-shadow: 0 0.5em 3rem -1rem rgba(0, 0, 0, 0.5);
     }
 
-    .card-box a .card-image {
-        width: calc((1500px / 4) * 0.85);
-        height: calc((1500px / 4) * 0.70);
-        margin: 15px auto;
-        overflow: hidden;
-        border-radius: 10px;
-    }
-
     .card-box a .card-image img {
         width: calc((1500px / 4) * 0.85);
         height: calc((1500px / 4) * 0.70);
         object-fit: cover;
-    }
-
-    .card-box a .card-txt {
-        width: calc((1500px / 4) * 0.9);
-        height: calc((1500px / 4) * 0.25);
-        margin: auto;
-        padding-top: 5px;
-        font-size: 18px;
-        text-align: center;
     }
 
     #to-top {
@@ -174,7 +155,6 @@
     }
 
 
-
 </style>
 
 
@@ -188,7 +168,7 @@
     function keyword() {
         $.ajax({
             type: "GET",
-            url: "/main",
+            url: "/main_page",
             data: {},
             success: function (response) {
                 let cards = response['all_card']
@@ -248,9 +228,9 @@
 <div class="wrap">
     <header class="header">
         <div class="top">
-            <img src="/static/logo.jpg" alt="logo">
+            <img src="/static/logo.png" alt="logo">
             <p>안녕하세요. (이름) 님!
-                <button onclick="keyword('로그아웃')" type="button" class="btn btn-primary">로그아웃</button>
+                <button onclick="logout_out()" type="button" class="btn btn-primary">로그아웃</button>
             </p>
         </div>
     </header>

@@ -37,11 +37,12 @@ for tr in trs:
         image = tr.select_one('tbody > tr:nth-child(1) > td:nth-child(1) > a > img')['src']
         url = tr.select_one('tbody > tr:nth-child(1) > td:nth-child(1) > a')
 
-        doc = {
-            'title':title,
-            'address':address,
-            'description':description,
-            'image':image,
-            'url':url
-        }
-        db.prac.insert_one(doc)
+        print(url)
+        # doc = {
+        #     'title':title,
+        #     'address':address,
+        #     'description':description,
+        #     'image':image,
+        #     'url':url
+        # }
+        # db.prac.insert_one(doc)
