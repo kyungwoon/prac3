@@ -7,7 +7,6 @@ from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.dbsparta
 
-
 ## HTML을 주는 부분
 @app.route('/')
 def home():
@@ -64,7 +63,7 @@ def login():
 # 메인페이지
 @app.route('/main')
 def main_page():
-    return render_template('index.html')
+    return render_template('main.html')
 
 
 @app.route('/main_page', methods=['GET'])
