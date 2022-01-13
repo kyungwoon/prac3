@@ -114,12 +114,6 @@ def check_dup():
     exists = bool(db.signup.find_one({"id": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-@app.route('/memo', methods=['GET'])
-def name():
-    user = db.signup.find_one({'name':name})
-    return jsonify({'user_name':user})
-
-
 # 메인페이지
 @app.route('/main')
 def main_page():
